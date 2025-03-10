@@ -231,9 +231,8 @@
 		<div class="content-container">
 			<div class="hide-download"></div> <!-- 这个遮罩层会挡住下载按钮 -->
 			<div class="iframe-container">
-				<iframe
-					src="https://oeyoews.github.io/test-pdf/index.pdf"
-					class="responsive-iframe" id="pdf-iframe"></iframe>
+				<iframe src="https://oeyoews.github.io/test-pdf/index.pdf" class="responsive-iframe"
+					id="pdf-iframe"></iframe>
 			</div>
 		</div>
 
@@ -260,6 +259,11 @@
 
 			// iframe 加载事件
 			const pdfIframe = document.getElementById('pdf-iframe');
+
+			const hideDownload = document.querySelector('.hide-download');
+			if (hideDownload) {
+				hideDownload.style.display = 'none';
+			}
 			if (pdfIframe) {
 				// 如果是移动设备，尝试使用 Google Docs 查看器
 				if (isMobile) {

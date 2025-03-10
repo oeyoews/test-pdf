@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>花生周报 (LENOVO) - 研究报告</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 	<style>
 		body {
 			font-family: 'Microsoft YaHei', 'SimHei', Arial, sans-serif;
@@ -226,13 +227,16 @@
 		<div class="report-info">作者：研究部 | 分析师：花生研究团队</div>
 		<div class="report-info">联系方式：research@sinobridge.com | 电话：010-12345678</div>
 
-
+		<div id="pdf-container">
+			<!-- <div class="loading">PDF 加载中...</div> -->
+		</div>
 
 		<div class="content-container">
 			<div class="hide-download"></div> <!-- 这个遮罩层会挡住下载按钮 -->
 			<div class="iframe-container">
-				<iframe src="https://oeyoews.github.io/test-pdf/index.pdf" class="responsive-iframe"
-					id="pdf-iframe"></iframe>
+				<iframe
+					src="http://scrm.sino-bridge.com/scrm/mobile-upgrade/test-api/profile/2025/03/07/95cd8990-7e24-4798-ba06-0e8dcbd96c14.pdf#toolbar=1"
+					class="responsive-iframe" id="pdf-iframe"></iframe>
 			</div>
 		</div>
 
@@ -246,27 +250,80 @@
 	</div>
 
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			// 检测设备类型
-			const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+		// 检测设备类型
+		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+		// 设置 PDF.js worker 路径
+		pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+		async function renderPDF(url) {
+			try {
+				const loadingTask = pdfjsLib.getDocument(url);
+				const pdf = await loadingTask.promise;
+				const container = document.getElementById('pdf-container');
+				container.innerHTML = ''; // 清除加载提示
+
+				// 遍历所有页面
+				for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+					const page = await pdf.getPage(pageNum);
+
+					// 创建页面容器
+					const wrapper = document.createElement('div');
+					wrapper.className = 'page-wrapper';
+					container.appendChild(wrapper);
+
+					// 设置合适的缩放比例
+					const viewport = page.getViewport({ scale: 1.0 });
+					const containerWidth = window.innerWidth - 40; // 使用窗口宽度减去内边距
+					const scale = containerWidth / viewport.width;
+					const scaledViewport = page.getViewport({ scale });
+
+					// 获取页面的操作列表
+					const opList = await page.getOperatorList();
+
+					// 创建SVG图形
+					const svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
+					const svg = await svgGfx.getSVG(opList, scaledViewport);
+
+					// 设置SVG样式
+					svg.style.width = `${scaledViewport.width}px`;
+					svg.style.height = `${scaledViewport.height}px`;
+					svg.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+					svg.style.borderRadius = '4px';
+
+					wrapper.appendChild(svg);
+				}
+			} catch (error) {
+				console.error('Error loading PDF:', error);
+				document.getElementById('pdf-container').innerHTML =
+					`<div style="color: red; text-align: center;">PDF 加载失败：${error.message}</div>`;
+			}
+		}
+
+		// 加载示例 PDF 文件
+		const pdf = 'https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf'
+		const pdf2 = 'http://scrm.sino-bridge.com/scrm/mobile-upgrade/test-api/profile/2025/03/07/95cd8990-7e24-4798-ba06-0e8dcbd96c14.pdf'
+		if (isMobile) {
+			renderPDF(pdf2)
+		}
+
+
+		// pc
+		document.addEventListener('DOMContentLoaded', function () {
 			// PDF 链接
-			// const pdfUrl = "https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf";
-			const pdfUrl = "index.pdf"
+			const pdfUrl = "https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf";
 
 			// 设置页面标题
 			document.title = "花生周报 (LENOVO) - 研究报告";
 
 			// iframe 加载事件
 			const pdfIframe = document.getElementById('pdf-iframe');
-
-			const hideDownload = document.querySelector('.hide-download');
-			if (hideDownload) {
-				hideDownload.style.display = 'none';
-			}
 			if (pdfIframe) {
 				// 如果是移动设备，尝试使用 Google Docs 查看器
 				if (isMobile) {
+					// 隐藏 iframe
+					// pdfIframe.style.display = 'none';
 					// 注意：此方法需要 PDF 是公开可访问的
 					// 例如：https://docs.google.com/viewer?url=YOUR_PDF_URL&embedded=true
 					// 但由于有时无法访问 Google 服务，我们保留直接链接

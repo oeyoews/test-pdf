@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>花生周报 (LENOVO) - 研究报告</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+	<script src="./pdf.min.js"></script>
 	<style>
 		body {
 			font-family: 'Microsoft YaHei', 'SimHei', Arial, sans-serif;
@@ -227,16 +227,17 @@
 		<div class="report-info">作者：研究部 | 分析师：花生研究团队</div>
 		<div class="report-info">联系方式：research@sinobridge.com | 电话：010-12345678</div>
 
-		<div id="pdf-container">
-			<!-- <div class="loading">PDF 加载中...</div> -->
-		</div>
 
+
+		<!-- svg -->
+		<div id="pdf-container"> </div>
+
+		<!-- pc -->
 		<div class="content-container">
 			<div class="hide-download"></div> <!-- 这个遮罩层会挡住下载按钮 -->
 			<div class="iframe-container">
-				<iframe
-					src="http://scrm.sino-bridge.com/scrm/mobile-upgrade/test-api/profile/2025/03/07/95cd8990-7e24-4798-ba06-0e8dcbd96c14.pdf#toolbar=1"
-					class="responsive-iframe" id="pdf-iframe"></iframe>
+				<iframe src="https://oeyoews.github.io/test-pdf/index.pdf" class="responsive-iframe"
+					id="pdf-iframe"></iframe>
 			</div>
 		</div>
 
@@ -253,9 +254,10 @@
 
 		// 检测设备类型
 		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+		const pdfUrl = 'https://oeyoews.github.io/test-pdf/index.pdf';
 
 		// 设置 PDF.js worker 路径
-		pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+		pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js';
 
 		async function renderPDF(url) {
 			try {
@@ -301,29 +303,32 @@
 			}
 		}
 
-		// 加载示例 PDF 文件
-		const pdf = 'https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf'
-		const pdf2 = 'http://scrm.sino-bridge.com/scrm/mobile-upgrade/test-api/profile/2025/03/07/95cd8990-7e24-4798-ba06-0e8dcbd96c14.pdf'
 		if (isMobile) {
-			renderPDF(pdf2)
+			renderPDF(pdfUrl)
 		}
 
-
-		// pc
 		document.addEventListener('DOMContentLoaded', function () {
+
 			// PDF 链接
-			const pdfUrl = "https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf";
+			// const pdfUrl = "https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf";
+			const pdfUrl = "index.pdf"
 
 			// 设置页面标题
 			document.title = "花生周报 (LENOVO) - 研究报告";
 
 			// iframe 加载事件
 			const pdfIframe = document.getElementById('pdf-iframe');
+			const hiddenMobile = document.querySelector('.content-container')
+
+			const hideDownload = document.querySelector('.hide-download');
+			if (hideDownload) {
+				hideDownload.style.display = 'none';
+			}
 			if (pdfIframe) {
 				// 如果是移动设备，尝试使用 Google Docs 查看器
 				if (isMobile) {
-					// 隐藏 iframe
-					// pdfIframe.style.display = 'none';
+
+					hiddenMobile.style.display = 'none';
 					// 注意：此方法需要 PDF 是公开可访问的
 					// 例如：https://docs.google.com/viewer?url=YOUR_PDF_URL&embedded=true
 					// 但由于有时无法访问 Google 服务，我们保留直接链接
@@ -395,7 +400,8 @@
 			window.addEventListener('resize', updateHideDownloadStyle);
 
 			// 在 PDF iframe 加载完成后也更新一次
-			if (pdfIframe) {
+			if (pdfIframe && !isMobile) {
+				console.log('pc')
 				pdfIframe.addEventListener('load', updateHideDownloadStyle);
 			}
 		});

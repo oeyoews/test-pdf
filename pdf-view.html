@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>花生周报 (LENOVO) - 研究报告</title>
+	<style>
+		body {
+			font-family: 'Microsoft YaHei', 'SimHei', Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+			color: #333;
+		}
+
+		.hide-download {
+			cursor: auto;
+			position: absolute;
+			top: 18px;
+			right: 95px;
+			width: 48px;
+			/* 适当调整宽度 */
+			height: 48px;
+			/* 适当调整高度 */
+			background-color: #3c3c3c;
+			/* background-color: black; */
+			/* 盖住下载按钮 */
+			z-index: 10;
+			pointer-events: all;
+			/* 确保不影响其他交互 */
+		}
+
+		.container {
+			width: 100%;
+			/* max-width: 1200px; */
+			margin: 0 auto;
+			padding: 10px;
+			box-sizing: border-box;
+		}
+
+		header {
+			background-color: #fff;
+			padding: 15px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			margin-bottom: 15px;
+			border-bottom: 3px solid #1a5fb4;
+			border-radius: 4px 4px 0 0;
+		}
+
+		.header-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.logo {
+			font-size: 20px;
+			font-weight: bold;
+			color: #1a5fb4;
+			margin-bottom: 5px;
+		}
+
+		.report-meta {
+			text-align: right;
+			font-size: 14px;
+		}
+
+		.report-title {
+			font-size: 24px;
+			font-weight: bold;
+			margin: 10px 0;
+			color: #333;
+			word-break: break-word;
+		}
+
+		.report-info {
+			font-size: 14px;
+			color: #666;
+			margin-bottom: 5px;
+		}
+
+		.content-container {
+			background-color: #fff;
+			padding: 10px;
+			border-radius: 4px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			position: relative;
+		}
+
+		.iframe-container {
+			position: relative;
+			overflow: hidden;
+			padding-top: 100%;
+			/* 1:1 比例，可以调整 */
+		}
+
+		.responsive-iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border: 1px solid #ddd;
+		}
+
+		footer {
+			margin-top: 15px;
+			padding: 10px 0;
+			text-align: center;
+			font-size: 12px;
+			color: #999;
+			border-top: 1px solid #ddd;
+		}
+
+		.disclaimer {
+			background-color: #f8f8f8;
+			padding: 12px;
+			font-size: 12px;
+			border-left: 4px solid #e0e0e0;
+			margin: 15px 0;
+			color: #666;
+		}
+
+		.controls {
+			margin: 10px 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.btn {
+			background-color: #1a5fb4;
+			color: white;
+			border: none;
+			padding: 8px 15px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+			text-decoration: none;
+			display: inline-block;
+			transition: background-color 0.3s;
+		}
+
+		.btn:hover {
+			background-color: #154a8c;
+		}
+
+		.btn-secondary {
+			background-color: #6c757d;
+		}
+
+		.btn-secondary:hover {
+			background-color: #5a6268;
+		}
+
+		.mobile-note {
+			background-color: #fff3cd;
+			border-left: 4px solid #ffc107;
+			padding: 10px;
+			margin-bottom: 15px;
+			font-size: 14px;
+		}
+
+		.qrcode-container {
+			text-align: center;
+			margin: 15px 0;
+		}
+
+		.qrcode {
+			max-width: 200px;
+			height: auto;
+			border: 1px solid #ddd;
+		}
+
+		@media (max-width: 768px) {
+			.header-content {
+				flex-direction: column;
+			}
+
+			.logo,
+			.report-meta {
+				text-align: center;
+				width: 100%;
+				margin-bottom: 10px;
+			}
+
+			.report-title {
+				font-size: 20px;
+				text-align: center;
+			}
+
+			.report-info {
+				text-align: center;
+			}
+
+			.btn {
+				padding: 6px 12px;
+				font-size: 13px;
+			}
+
+			.iframe-container {
+				padding-top: 140%;
+				/* 更高的比例，适应移动端 */
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<div class="header-content">
+				<div class="logo">花生周报</div>
+				<div class="report-meta">
+					<div>报告编号：R2025-0303</div>
+					<div>发布日期：2025 年 3 月 3 日</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="report-title">花生周报 (LENOVO)</div>
+		<div class="report-info">作者：研究部 | 分析师：花生研究团队</div>
+		<div class="report-info">联系方式：research@sinobridge.com | 电话：010-12345678</div>
+
+
+
+		<div class="content-container">
+			<div class="hide-download"></div> <!-- 这个遮罩层会挡住下载按钮 -->
+			<div class="iframe-container">
+				<iframe
+					src="http://scrm.sino-bridge.com/scrm/mobile-upgrade/test-api/profile/2025/03/07/95cd8990-7e24-4798-ba06-0e8dcbd96c14.pdf#toolbar=1"
+					class="responsive-iframe" id="pdf-iframe"></iframe>
+			</div>
+		</div>
+
+		<div class="disclaimer">
+			<strong>免责声明：</strong> 本研究报告由专业研究团队撰写，仅供参考。报告中的信息和观点基于可靠的资料来源，但我们不保证其准确性和完整性。投资者应自行承担投资风险。未经授权，不得转载或引用本报告内容。
+		</div>
+
+		<footer>
+			<p>© 2025 花生研究 版权所有 | 地址：北京市朝阳区金融街 1 号 | 邮编：100000</p>
+		</footer>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// 检测设备类型
+			const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+			// PDF 链接
+			const pdfUrl = "https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf";
+
+			// 设置页面标题
+			document.title = "花生周报 (LENOVO) - 研究报告";
+
+			// iframe 加载事件
+			const pdfIframe = document.getElementById('pdf-iframe');
+			if (pdfIframe) {
+				// 如果是移动设备，尝试使用 Google Docs 查看器
+				if (isMobile) {
+					// 注意：此方法需要 PDF 是公开可访问的
+					// 例如：https://docs.google.com/viewer?url=YOUR_PDF_URL&embedded=true
+					// 但由于有时无法访问 Google 服务，我们保留直接链接
+					// pdfIframe.src = "https://docs.google.com/viewer?url=" + encodeURIComponent(pdfUrl) + "&embedded=true";
+
+					// 仍然使用直接链接，但提供更明显的提示
+					document.querySelector('.mobile-note').style.display = 'block';
+				}
+
+				// 处理 iframe 加载错误
+				pdfIframe.onerror = function () {
+					document.querySelector('.iframe-container').innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <p>PDF 加载失败，请尝试以下方法：</p>
+                            <div style="margin-top: 10px;">
+                                <a href="${pdfUrl}" target="_blank" class="btn">在新窗口打开</a>
+                                <a href="${pdfUrl}" download class="btn btn-secondary" style="margin-left: 10px;">下载 PDF</a>
+                            </div>
+                        </div>
+                    `;
+				};
+			}
+
+			// 生成二维码（使用外部服务，如果不可用可以去掉）
+			// 如果二维码服务不可用，可以隐藏这部分
+			const qrcodeImg = document.getElementById('qrcode');
+			if (qrcodeImg) {
+				qrcodeImg.onerror = function () {
+					document.querySelector('.qrcode-container').style.display = 'none';
+				};
+			}
+
+			// 记录初始设备像素比
+			const initialPixelRatio = window.devicePixelRatio;
+
+			// 更新遮罩层位置和大小的函数
+			function updateHideDownloadStyle() {
+				const hideDownload = document.querySelector('.hide-download');
+				if (!hideDownload) return;
+
+				const currentPixelRatio = window.devicePixelRatio;
+				const scale = initialPixelRatio / currentPixelRatio;
+				console.log(scale, currentPixelRatio, initialPixelRatio)
+
+				// 基础样式值
+				const baseTop = 18;
+				const baseRight = 95;
+				const baseWidth = 48;
+				const baseHeight = 48;
+
+				// 根据缩放比例更新样式
+				const top = () => {
+					const value = baseTop * scale;
+					if (value < 16) return 16
+					return value
+				}
+				hideDownload.style.top = `${top()}px`;
+				hideDownload.style.right = `${baseRight * scale * 1.07}px`;
+				hideDownload.style.width = `${baseWidth * scale}px`;
+				hideDownload.style.height = `${baseHeight * scale}px`;
+				hideDownload.style.scale = 0.8;
+			}
+
+			// 初始调用
+			updateHideDownloadStyle();
+
+			// 监听窗口缩放
+			window.matchMedia('screen and (resolution: 1dppx)').addListener(updateHideDownloadStyle);
+			window.addEventListener('resize', updateHideDownloadStyle);
+
+			// 在 PDF iframe 加载完成后也更新一次
+			if (pdfIframe) {
+				pdfIframe.addEventListener('load', updateHideDownloadStyle);
+			}
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PDF.js Example</title>
+	<style>
+		#pdf-container {
+			margin: 20px;
+		}
+
+		canvas {
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="pdf-container">
+		<canvas id="pdf-canvas"></canvas>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
+	<script type="module">
+		// 配置 PDF.js worker
+		pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
+
+		const online_pdf = 'https://sinobridge-test.oss-cn-beijing.aliyuncs.com/20250217%E8%88%AA%E8%BF%90%E6%97%A5%E6%8A%A5.pdf'
+		// 加载并渲染 PDF
+		async function renderPDF() {
+			try {
+				// 加载 PDF 文档
+				const loadingTask = pdfjsLib.getDocument(online_pdf);
+				const pdf = await loadingTask.promise;
+
+				// 获取第一页
+				const page = await pdf.getPage(1);
+
+				// 设置缩放和 canvas
+				const scale = 1.5;
+				const viewport = page.getViewport({ scale });
+				const canvas = document.getElementById('pdf-canvas');
+				const context = canvas.getContext('2d');
+
+				// 设置 canvas 尺寸
+				canvas.height = viewport.height;
+				canvas.width = viewport.width;
+
+				// 渲染 PDF 页面到 canvas
+				const renderContext = {
+					canvasContext: context,
+					viewport: viewport
+				};
+
+				await page.render(renderContext);
+			} catch (error) {
+				console.error('Error loading PDF:', error);
+			}
+		}
+
+		// 页面加载完成后执行渲染
+		window.onload = renderPDF;
+	</script>
+</body>
+
+</html>
